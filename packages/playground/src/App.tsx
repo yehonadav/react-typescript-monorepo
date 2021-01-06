@@ -1,5 +1,6 @@
 import { GlobalStyle } from "@rtsm/common";
 import themes from "@rtsm/common/dist/themes";
+import { useUser } from "@rtsm/common/dist/hooks";
 import axios from "axios";
 import createBrowserHistory from "history/createBrowserHistory";
 import Raven from "raven-js";
@@ -23,19 +24,24 @@ addLocaleData(localeData);
 axios.defaults.validateStatus = (status: number) => (status >= 200 && status <= 400);
 Raven.config(ENV.SENTRY_URL).install();
 
-const App = () => (
-  <Provider store={store}>
-    <IntlProvider>
-      <Router history={history}>
-        <ThemeProvider theme={theme}>
-          <React.Fragment>
-            <GlobalStyle />
-            <Main />
-          </React.Fragment>
-        </ThemeProvider>
-      </Router>
-    </IntlProvider>
-  </Provider>
-);
+const App = () => {
+  const testhook = useUser();
+
+  return (
+    <Provider store={store}>
+      <IntlProvider>
+        <Router history={history}>
+          <ThemeProvider theme={theme}>
+            <React.Fragment>
+              <h1>{testhook}</h1>
+              <GlobalStyle />
+              <Main />
+            </React.Fragment>
+          </ThemeProvider>
+        </Router>
+      </IntlProvider>
+    </Provider>
+  );
+};
 
 export default App;
